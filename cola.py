@@ -48,8 +48,8 @@ class Cola():
         return dato
 
 
-c = Cola()
-from random import randint
+# c = Cola()
+# from random import randint
 
 # for i in range(10):
 #     c.arribo(randint(0, 100))
