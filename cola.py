@@ -10,7 +10,7 @@ class Cola():
         self.__frente = None
         self.__final = None
         self.__tamnio = 0
-    
+
     def arribo(self, dato):
         nodo = nodoCola()
         nodo.info = dato
@@ -30,24 +30,35 @@ class Cola():
         if self.__frente is None:
             self.__final = None
 
-
         self.__tamnio -= 1
         return dato
-
-
 
     def tamanio(self):
         return self.__tamnio
 
+    def cola_vacia(self):
+        return self.__frente is None
+
+    def en_frente(self):
+        return self.__frente.info
+
+    def mover_al_final(self):
+        dato = self.atencion()
+        self.arribo(dato)
+        return dato
+
 
 c = Cola()
-c.arribo(1)
-c.arribo(2)
-print('tamanio', c.tamanio())
-print(c.atencion())
-print('tamanio', c.tamanio())
-print(c.atencion())
-print('tamanio', c.tamanio())
-c.arribo(3)
-print('tamanio', c.tamanio())
-print(c.atencion())
+from random import randint
+
+# for i in range(10):
+#     c.arribo(randint(0, 100))
+
+
+# for i in range(c.tamanio()):
+#     print(c.mover_al_final())
+
+# print('tamanio', c.tamanio())
+# while(not c.cola_vacia()):
+#     print(c.atencion())
+# print('tamanio', c.tamanio())
