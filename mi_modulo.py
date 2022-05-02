@@ -62,3 +62,47 @@ lab = [[1, 1, 1, 1, 1, 1, 1],
        [1, 1, 1, 1, 1, 1, 2]]
 
 salida_laberinto(lab, 0, 0)
+
+
+
+
+def barrido_descendente(vec):
+    if(len(vec) == 1):
+        print(vec[0])
+    else:
+        print(vec[-1])  #? print(vec[len(vec)-1])
+        barrido_descendente(vec[:-1])
+
+
+
+def barrido_descendente2(vec, pos):
+    if(pos == 0):
+        print(vec[pos])
+    else:
+        print(vec[pos])
+        barrido_descendente2(vec, pos-1)
+
+
+
+
+a = [1,2,3,4,5]
+barrido_descendente(a)
+
+
+romanos = {'I': 1, 'V': 5, 'X': 10, 'L': 50}
+
+
+def romano_a_decimal(num_romano):
+    if(len(num_romano) == 1):
+        return romanos[num_romano]
+    else:
+        if(romanos[num_romano[0]] >= romanos[num_romano[1]]):
+            return romanos[num_romano[0]] + romano_a_decimal(num_romano[1:])
+        else:
+            return - romanos[num_romano[0]] + romano_a_decimal(num_romano[1:])
+
+
+print(romano_a_decimal('XXI'))
+
+
+# def busqueda_sec()
