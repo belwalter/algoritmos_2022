@@ -49,6 +49,27 @@ class Lista():
         while(aux is not None):
             print(aux.info)
             aux = aux.sig
+    
+    def barrido_armadura_traje(self):
+        aux = self.__inicio
+        while(aux is not None):
+            if('traje' in aux.info.bio or 'armadura' in aux.info.bio):
+                print(aux.info)
+            aux = aux.sig
+
+    def barrido_anterior_1963(self):
+        aux = self.__inicio
+        while(aux is not None):
+            if(aux.info.aparicion < 1963):
+                print(aux.info)
+            aux = aux.sig
+    
+    def barrido_comienza_con(self, iniciales=[]):
+        aux = self.__inicio
+        while(aux is not None):
+            if(aux.info.nombre[0] in iniciales):
+                print(aux.info)
+            aux = aux.sig
 
     def busqueda(self, buscado, campo=None):
         pos = None
@@ -87,21 +108,33 @@ class Lista():
         else:
             return None
 
+    def contar_por_casa(self):
+        marvel, dc = 0, 0
+
+        aux = self.__inicio
+        while(aux is not None):
+            if(aux.info.casa.capitalize() == 'Marvel'):
+                marvel += 1
+            if(aux.info.casa.capitalize() == 'Dc'):
+                dc += 1
+            aux = aux.sig
+
+        return marvel, dc
 
 # cadena = 'hola'
 # cadena.startswith('C')
 # print(cadena[0])
 
-class Persona:
+# class Persona:
 
-    def __init__(self, apellido, nombre, dni):
-        self.apellido = apellido
-        self.nombre = nombre
-        self.dni = dni
-        self.telefono = None
+#     def __init__(self, apellido, nombre, dni):
+#         self.apellido = apellido
+#         self.nombre = nombre
+#         self.dni = dni
+#         self.telefono = None
     
-    def __str__(self):
-        return f"{self.apellido} {self.nombre}, {self.dni}"
+#     def __str__(self):
+#         return f"{self.apellido} {self.nombre}, {self.dni}"
 
 
 
@@ -116,7 +149,7 @@ class Persona:
 # print(criterio(cadena))
 
 
-l = Lista()
+# l = Lista()
 
 # l.insertar(Persona('A', 'A', 7), 'nombre')
 # l.insertar(Persona('C', 'C', 2), 'nombre')
@@ -131,18 +164,18 @@ l = Lista()
 
 
 # l.eliminar('A', 'nombre')
-l.insertar(11)
-l.insertar(8)
-l.insertar(9)
-l.insertar(10)
-l.insertar(5)
+# l.insertar(11)
+# l.insertar(8)
+# l.insertar(9)
+# l.insertar(10)
+# l.insertar(5)
 
 # print(l.obtener_elemento(0))
 # print(l.obtener_elemento(-2))
 # print(l.obtener_elemento(5))
 # print(l.obtener_elemento(8))
 
-pos = l.eliminar(8)
+# pos = l.eliminar(8)
 # if pos is not None:
 #     l.insertar(18)
 
@@ -152,7 +185,7 @@ pos = l.eliminar(8)
 # print(l.eliminar(10))
 
 
-l.barrido()
+# l.barrido()
 
 # print(l.busqueda(7).info)
 # print(l.busqueda(2))
