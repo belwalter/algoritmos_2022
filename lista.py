@@ -64,6 +64,13 @@ class Lista():
                 print(aux.info)
             aux = aux.sig
     
+    def barrido_jedi_master(self):
+        aux = self.__inicio
+        while(aux is not None):
+            if('yoda' in aux.info.maestro or 'luke skywalker' in aux.info.maestro):
+                print(aux.info)
+            aux = aux.sig
+
     def barrido_comienza_con(self, iniciales=[]):
         aux = self.__inicio
         while(aux is not None):
