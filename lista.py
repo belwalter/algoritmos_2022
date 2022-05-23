@@ -8,8 +8,9 @@ def criterio(dato, campo=None):
     else:
         return dic[campo]
 
+
 class nodoLista():
-    info, sig = None, None
+    info, sig, sublista = None, None, None
 
 
 class Lista():
@@ -22,6 +23,7 @@ class Lista():
     def insertar(self, dato, campo=None):
         nodo = nodoLista()
         nodo.info = dato
+        nodo.sublista = Lista()
 
         if(self.__inicio is None or criterio(nodo.info, campo) < criterio(self.__inicio.info, campo)):
             nodo.sig = self.__inicio
@@ -48,6 +50,19 @@ class Lista():
         aux = self.__inicio
         while(aux is not None):
             print(aux.info)
+            aux = aux.sig
+    
+    def barrido_lista_lista(self):
+        aux = self.__inicio
+        while(aux is not None):
+            print(aux.info)
+            print('sublista:')
+            aux.sublista.barrido()
+            # aux1 = aux.sublista.__inicio
+            # while(aux1 is not None):
+            #     print('  ', aux1.info)
+            #     aux1 = aux1.sig
+
             aux = aux.sig
     
     def barrido_armadura_traje(self):
@@ -205,4 +220,40 @@ class Lista():
 #     while(aux is not None):
 #         aux = l.eliminar(vocal)
 
+class Weather():
 
+    def __init__(self, id, temp, hum, pres):
+        self.id = id
+        self.temp = temp
+        self.hum = hum
+        self.pres = pres
+
+    def __str__(self):
+        return f'{self.id} - {self.temp} - {self.hum} - {self.pres}'
+
+
+lista_estaciones = Lista()
+
+lista_estaciones.insertar('A')
+lista_estaciones.insertar('G')
+lista_estaciones.insertar('L')
+lista_estaciones.insertar('O')
+lista_estaciones.insertar('Y')
+
+
+# lista_estaciones.barrido()
+
+clima = Weather(24, 15, 80, 1004)
+clima2 = Weather(12, 20, 80, 1024)
+estacion = lista_estaciones.busqueda('L')
+estacion.sublista.insertar(clima, 'id')
+estacion.sublista.insertar(clima2, 'id')
+
+lista_estaciones.barrido_lista_lista()
+
+clima_buscado = estacion.sublista.busqueda(12, 'id')
+if(clima_buscado):
+    clima_buscado.info.hum = 90
+
+print()
+lista_estaciones.barrido_lista_lista()
