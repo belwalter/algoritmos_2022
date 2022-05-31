@@ -118,6 +118,8 @@ class Lista():
             if(actual is not None):
                 dato = actual.info
                 anterior.sig = actual.sig
+        if dato:
+            self.__tamanio -= 1 
 
         return dato
 
@@ -220,40 +222,40 @@ class Lista():
 #     while(aux is not None):
 #         aux = l.eliminar(vocal)
 
-class Weather():
+# class Weather():
 
-    def __init__(self, id, temp, hum, pres):
-        self.id = id
-        self.temp = temp
-        self.hum = hum
-        self.pres = pres
+#     def __init__(self, id, temp, hum, pres):
+#         self.id = id
+#         self.temp = temp
+#         self.hum = hum
+#         self.pres = pres
 
-    def __str__(self):
-        return f'{self.id} - {self.temp} - {self.hum} - {self.pres}'
-
-
-lista_estaciones = Lista()
-
-lista_estaciones.insertar('A')
-lista_estaciones.insertar('G')
-lista_estaciones.insertar('L')
-lista_estaciones.insertar('O')
-lista_estaciones.insertar('Y')
+#     def __str__(self):
+#         return f'{self.id} - {self.temp} - {self.hum} - {self.pres}'
 
 
-# lista_estaciones.barrido()
+# lista_estaciones = Lista()
 
-clima = Weather(24, 15, 80, 1004)
-clima2 = Weather(12, 20, 80, 1024)
-estacion = lista_estaciones.busqueda('L')
-estacion.sublista.insertar(clima, 'id')
-estacion.sublista.insertar(clima2, 'id')
+# lista_estaciones.insertar('A')
+# lista_estaciones.insertar('G')
+# lista_estaciones.insertar('L')
+# lista_estaciones.insertar('O')
+# lista_estaciones.insertar('Y')
 
-lista_estaciones.barrido_lista_lista()
 
-clima_buscado = estacion.sublista.busqueda(12, 'id')
-if(clima_buscado):
-    clima_buscado.info.hum = 90
+# # lista_estaciones.barrido()
 
-print()
-lista_estaciones.barrido_lista_lista()
+# clima = Weather(24, 15, 80, 1004)
+# clima2 = Weather(12, 20, 80, 1024)
+# estacion = lista_estaciones.busqueda('L')
+# estacion.sublista.insertar(clima, 'id')
+# estacion.sublista.insertar(clima2, 'id')
+
+# lista_estaciones.barrido_lista_lista()
+
+# clima_buscado = estacion.sublista.busqueda(12, 'id')
+# if(clima_buscado):
+#     clima_buscado.info.hum = 90
+
+# print()
+# lista_estaciones.barrido_lista_lista()
