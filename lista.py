@@ -52,6 +52,13 @@ class Lista():
             print(aux.info)
             aux = aux.sig
     
+    def barrido_entrenador_mas_tres(self):
+        aux = self.__inicio
+        while(aux is not None):
+            if(aux.info.torneos_ganados > 3):
+                print(aux.info)
+            aux = aux.sig
+    
     def barrido_lista_lista(self):
         aux = self.__inicio
         while(aux is not None):
@@ -90,6 +97,14 @@ class Lista():
         aux = self.__inicio
         while(aux is not None):
             if(aux.info.nombre[0] in iniciales):
+                print(aux.info)
+            aux = aux.sig
+
+    def barrido_porcentaje_victorias(self):
+        aux = self.__inicio
+        while(aux is not None):
+            total = aux.info.batallas_ganadas + aux.info.batallas_perdidas
+            if(aux.info.batallas_ganadas / total >= 0.79):
                 print(aux.info)
             aux = aux.sig
 
@@ -144,6 +159,16 @@ class Lista():
             aux = aux.sig
 
         return marvel, dc
+    
+    def mayor_de_lista(self, campo):
+        mayor = self.__inicio
+        aux = self.__inicio
+        while(aux is not None):
+            if(criterio(aux.info, campo) > criterio(mayor.info, campo)):
+                mayor = aux
+                break
+            aux = aux.sig
+        return mayor
 
 # cadena = 'hola'
 # cadena.startswith('C')
