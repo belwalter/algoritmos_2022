@@ -105,13 +105,11 @@ lista_jedi2 = Lista()
 file = open('jedis.txt')
 lineas = file.readlines()
 
-lista = []
 
 lineas.pop(0)  # quitar cabecera
 for linea in lineas:
     datos = linea.split(';')
-    datos.pop(-1)
-    # print(datos[4].split('/'))
+    # datos.pop(-1)
     lista_jedi.insertar(Jedi(datos[0],
                              datos[2],
                              datos[3].split('/'),
@@ -122,10 +120,10 @@ for linea in lineas:
                               datos[3],
                               datos[4].split('/')),
                          campo='especie')
-    lista.append(Jedi(datos[0],
-                      datos[2],
-                      datos[3].split('/'),
-                      datos[4].split('/')))
+    # lista.append(Jedi(datos[0],
+    #                   datos[2],
+    #                   datos[3].split('/'),
+    #                   datos[4].split('/')))
 # !
 lista_jedi.barrido()
 print()
