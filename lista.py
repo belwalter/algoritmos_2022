@@ -170,6 +170,12 @@ class Lista():
             aux = aux.sig
         return mayor
 
+    def dino_level(self, lista, nivel):
+        aux = self.__inicio
+        while(aux is not None):
+            if(aux.info.nombre in lista and aux.info.level in nivel):
+                print(aux.info)
+            aux = aux.sig
 # cadena = 'hola'
 # cadena.startswith('C')
 # print(cadena[0])
