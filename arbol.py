@@ -1,3 +1,5 @@
+from cola import Cola
+
 
 def nodoArbol():
     nodo = {
@@ -38,6 +40,7 @@ def inorden(arbol):
         print(arbol['info'])
         inorden(arbol['der'])
 
+
 def postorden(arbol):
     if(arbol is not None):
         postorden(arbol['der'])
@@ -57,13 +60,16 @@ def busqueda(arbol, clave):
     return aux
 
 
-
-def remplazar(arbol):
+def remplazar(arbol, anterior=None, primero=None):
     aux = None
     if arbol['der'] is None:
         aux = arbol['info']
+        if anterior:
+            anterior['der'] = arbol['izq']
+        else:
+            primero['izq'] = arbol['izq']
     else:
-        aux = remplazar(arbol['der'])
+        aux = remplazar(arbol['der'], anterior=arbol)
     return aux
 
 
@@ -85,10 +91,23 @@ def eliminar_nodo(arbol, clave):
                 arbol['der'] = arbol['izq']['der']
                 arbol['izq'] = arbol['izq']['izq']
             else:
-                aux = remplazar(arbol['izq'])
+                aux = remplazar(arbol['izq'], primero=arbol)
                 arbol['info'] = aux
 
     return x
+
+
+def por_nivel(arbol):
+    pendientes = Cola()
+    pendientes.arribo(arbol)
+    while not pendientes.cola_vacia():
+        nodo = pendientes.atencion()
+        print(nodo['info'])
+        if nodo['izq']:
+            pendientes.arribo(nodo['izq'])
+        if nodo['der']:
+            pendientes.arribo(nodo['der'])
+
 
 arbol = nodoArbol()
 
@@ -99,18 +118,20 @@ insertar_nodo(arbol, 31)
 insertar_nodo(arbol, 22)
 insertar_nodo(arbol, 45)
 insertar_nodo(arbol, 27)    
+insertar_nodo(arbol, 24) 
 
-inorden(arbol)
+# preorden(arbol)
 
 # value = eliminar_nodo(arbol, 31)
 
 # print('valor eliminado', value)
 
-# inorden(arbol)
+# preorden(arbol)
 
+por_nivel(arbol)
 
-pos = busqueda(arbol, 45)
-if pos:
-    print('asdasd', pos['info'])
+# pos = busqueda(arbol, 45)
+# if pos:
+#     print('asdasd', pos['info'])
 
 # postorden(arbol)
