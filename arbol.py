@@ -4,23 +4,25 @@ from cola import Cola
 def nodoArbol():
     nodo = {
         'info': None,
+        'villano': None,
         'der': None,
         'izq': None,
     }
     return nodo
 
 
-def insertar_nodo(arbol, dato):
+def insertar_nodo(arbol, dato, villano=None):
     if arbol['info'] is None:
         arbol['info'] = dato
+        arbol['villano'] = villano
     elif dato < arbol['info']:
         if arbol['izq'] is None:
             arbol['izq'] = nodoArbol()
-        insertar_nodo(arbol['izq'], dato)
+        insertar_nodo(arbol['izq'], dato, villano)
     else:
         if arbol['der'] is None:
             arbol['der'] = nodoArbol()
-        insertar_nodo(arbol['der'], dato)
+        insertar_nodo(arbol['der'], dato, villano)
 
 
 def arbol_vacio():
@@ -34,6 +36,16 @@ def preorden(arbol):
         preorden(arbol['der'])
 
 
+def contar_heroes(arbol):
+    contador = 0
+    if(arbol is not None):
+        if arbol['villano'] == False:
+            contador += 1
+        contador += contar_heroes(arbol['izq'])
+        contador += contar_heroes(arbol['der'])
+    return contador
+
+
 def inorden(arbol):
     if(arbol is not None):
         inorden(arbol['izq'])
@@ -41,11 +53,35 @@ def inorden(arbol):
         inorden(arbol['der'])
 
 
+def inorden_villano(arbol):
+    if(arbol is not None):
+        inorden_villano(arbol['izq'])
+        if arbol['villano'] == True:
+            print(arbol['info'])
+        inorden_villano(arbol['der'])
+
+
+def inorden_empieza_con(arbol, valor):
+    if(arbol is not None):
+        inorden_empieza_con(arbol['izq'], valor)
+        if arbol['info'].startswith(valor):
+            print(arbol['info'])
+        inorden_empieza_con(arbol['der'], valor)
+
+
 def postorden(arbol):
     if(arbol is not None):
         postorden(arbol['der'])
         print(arbol['info'])
         postorden(arbol['izq'])
+
+
+def postorden_heroes(arbol):
+    if(arbol is not None):
+        postorden_heroes(arbol['der'])
+        if arbol['villano'] == False:
+            print(arbol['info'])
+        postorden_heroes(arbol['izq'])
 
 
 def busqueda(arbol, clave):
@@ -109,16 +145,16 @@ def por_nivel(arbol):
             pendientes.arribo(nodo['der'])
 
 
-arbol = nodoArbol()
+# arbol = nodoArbol()
 
-insertar_nodo(arbol, 19)
-insertar_nodo(arbol, 7)
-insertar_nodo(arbol, 1)
-insertar_nodo(arbol, 31)
-insertar_nodo(arbol, 22)
-insertar_nodo(arbol, 45)
-insertar_nodo(arbol, 27)    
-insertar_nodo(arbol, 24) 
+# insertar_nodo(arbol, 19)
+# insertar_nodo(arbol, 7)
+# insertar_nodo(arbol, 1)
+# insertar_nodo(arbol, 31)
+# insertar_nodo(arbol, 22)
+# insertar_nodo(arbol, 45)
+# insertar_nodo(arbol, 27)    
+# insertar_nodo(arbol, 24) 
 
 # preorden(arbol)
 
@@ -128,7 +164,7 @@ insertar_nodo(arbol, 24)
 
 # preorden(arbol)
 
-por_nivel(arbol)
+# por_nivel(arbol)
 
 # pos = busqueda(arbol, 45)
 # if pos:
