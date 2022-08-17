@@ -25,7 +25,7 @@ def insertar_nodo(arbol, dato, villano=None):
         insertar_nodo(arbol['der'], dato, villano)
 
 
-def arbol_vacio():
+def arbol_vacio(arbol):
     return arbol['info'] is None
 
 
@@ -109,14 +109,15 @@ def remplazar(arbol, anterior=None, primero=None):
     return aux
 
 
-def eliminar_nodo(arbol, clave):
+def eliminar_nodo(arbol, clave, previo=None, hijo=None):
     x = None
     if arbol['info'] is not None:
         if clave < arbol['info']:
-            x = eliminar_nodo(arbol['izq'], clave)
+            x = eliminar_nodo(arbol['izq'], clave, arbol, 'izq')
         elif clave > arbol['info']:
-            x = eliminar_nodo(arbol['der'], clave)
+            x = eliminar_nodo(arbol['der'], clave, arbol, 'der')
         else:
+
             x = arbol['info']
             if arbol['izq'] is None and arbol['der'] is not None:
                 arbol['info'] = arbol['der']['info']
@@ -126,6 +127,11 @@ def eliminar_nodo(arbol, clave):
                 arbol['info'] = arbol['izq']['info']
                 arbol['der'] = arbol['izq']['der']
                 arbol['izq'] = arbol['izq']['izq']
+            elif arbol['izq'] is None and arbol['der'] is None:
+                if previo is None:
+                    arbol['info'] = None
+                else:
+                    previo[hijo] = None
             else:
                 aux = remplazar(arbol['izq'], primero=arbol)
                 arbol['info'] = aux
@@ -138,23 +144,24 @@ def por_nivel(arbol):
     pendientes.arribo(arbol)
     while not pendientes.cola_vacia():
         nodo = pendientes.atencion()
-        print(nodo['info'])
+        print(nodo['info'], nodo['izq']['info'] if nodo['izq'] else None, nodo['der']['info'] if nodo['der'] else None)
         if nodo['izq']:
             pendientes.arribo(nodo['izq'])
         if nodo['der']:
             pendientes.arribo(nodo['der'])
 
 
-# arbol = nodoArbol()
+arbol = nodoArbol()
 
-# insertar_nodo(arbol, 19)
-# insertar_nodo(arbol, 7)
-# insertar_nodo(arbol, 1)
-# insertar_nodo(arbol, 31)
-# insertar_nodo(arbol, 22)
-# insertar_nodo(arbol, 45)
-# insertar_nodo(arbol, 27)    
-# insertar_nodo(arbol, 24) 
+insertar_nodo(arbol, 19)
+insertar_nodo(arbol, 7)
+insertar_nodo(arbol, 1)
+insertar_nodo(arbol, 31)
+insertar_nodo(arbol, 22)
+insertar_nodo(arbol, 45)
+insertar_nodo(arbol, 27)    
+insertar_nodo(arbol, 24) 
+
 
 # preorden(arbol)
 
