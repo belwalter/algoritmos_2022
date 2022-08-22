@@ -4,25 +4,25 @@ from cola import Cola
 def nodoArbol():
     nodo = {
         'info': None,
-        'villano': None,
+        'datos': None,
         'der': None,
         'izq': None,
     }
     return nodo
 
 
-def insertar_nodo(arbol, dato, villano=None):
+def insertar_nodo(arbol, dato, datos=None):
     if arbol['info'] is None:
         arbol['info'] = dato
-        arbol['villano'] = villano
+        arbol['datos'] = datos
     elif dato < arbol['info']:
         if arbol['izq'] is None:
             arbol['izq'] = nodoArbol()
-        insertar_nodo(arbol['izq'], dato, villano)
+        insertar_nodo(arbol['izq'], dato, datos)
     else:
         if arbol['der'] is None:
             arbol['der'] = nodoArbol()
-        insertar_nodo(arbol['der'], dato, villano)
+        insertar_nodo(arbol['der'], dato, datos)
 
 
 def arbol_vacio(arbol):
@@ -97,46 +97,50 @@ def busqueda(arbol, clave):
 
 
 def remplazar(arbol, anterior=None, primero=None):
-    aux = None
+    info, datos = None, None
     if arbol['der'] is None:
-        aux = arbol['info']
+        info, datos = arbol['info'], arbol['datos']
         if anterior:
             anterior['der'] = arbol['izq']
         else:
             primero['izq'] = arbol['izq']
     else:
-        aux = remplazar(arbol['der'], anterior=arbol)
-    return aux
+        info, datos = remplazar(arbol['der'], anterior=arbol)
+    return info, datos
 
 
 def eliminar_nodo(arbol, clave, previo=None, hijo=None):
-    x = None
+    x, datos = None, None
     if arbol['info'] is not None:
         if clave < arbol['info']:
-            x = eliminar_nodo(arbol['izq'], clave, arbol, 'izq')
+            x, datos = eliminar_nodo(arbol['izq'], clave, arbol, 'izq')
         elif clave > arbol['info']:
-            x = eliminar_nodo(arbol['der'], clave, arbol, 'der')
+            x, datos = eliminar_nodo(arbol['der'], clave, arbol, 'der')
         else:
-
             x = arbol['info']
+            datos = arbol['datos']
             if arbol['izq'] is None and arbol['der'] is not None:
                 arbol['info'] = arbol['der']['info']
+                arbol['datos'] = arbol['der']['datos']
                 arbol['izq'] = arbol['der']['izq']
                 arbol['der'] = arbol['der']['der']
             elif arbol['der'] is None and arbol['izq'] is not None:
                 arbol['info'] = arbol['izq']['info']
+                arbol['datos'] = arbol['izq']['datos']
                 arbol['der'] = arbol['izq']['der']
                 arbol['izq'] = arbol['izq']['izq']
             elif arbol['izq'] is None and arbol['der'] is None:
                 if previo is None:
                     arbol['info'] = None
+                    arbol['datos'] = None
                 else:
                     previo[hijo] = None
             else:
-                aux = remplazar(arbol['izq'], primero=arbol)
-                arbol['info'] = aux
+                info, datos = remplazar(arbol['izq'], primero=arbol)
+                arbol['info'] = info
+                arbol['datos'] = datos
 
-    return x
+    return x, datos
 
 
 def por_nivel(arbol):
@@ -151,16 +155,25 @@ def por_nivel(arbol):
             pendientes.arribo(nodo['der'])
 
 
-arbol = nodoArbol()
+def crear_bosque(arbol, bosque1, bosque2):
+    if(arbol is not None):
+        crear_bosque(arbol['izq'], bosque1, bosque2)
+        if arbol['datos']['villano'] == True:
+            insertar_nodo(bosque2, arbol['info'])
+        else:
+            insertar_nodo(bosque1, arbol['info'])
+        crear_bosque(arbol['der'], bosque1, bosque2)
 
-insertar_nodo(arbol, 19)
-insertar_nodo(arbol, 7)
-insertar_nodo(arbol, 1)
-insertar_nodo(arbol, 31)
-insertar_nodo(arbol, 22)
-insertar_nodo(arbol, 45)
-insertar_nodo(arbol, 27)    
-insertar_nodo(arbol, 24) 
+# arbol = nodoArbol()
+
+# insertar_nodo(arbol, 19)
+# insertar_nodo(arbol, 7)
+# insertar_nodo(arbol, 1)
+# insertar_nodo(arbol, 31)
+# insertar_nodo(arbol, 22)
+# insertar_nodo(arbol, 45)
+# insertar_nodo(arbol, 27)    
+# insertar_nodo(arbol, 24) 
 
 
 # preorden(arbol)

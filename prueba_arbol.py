@@ -7,31 +7,59 @@ from arbol import (
     eliminar_nodo,
     inorden,
     postorden_heroes,
+    crear_bosque,
+    arbol_vacio,
 )
 
 arbol = nodoArbol()
 
 
+heroes = nodoArbol()
+villanos = nodoArbol()
+
+
 lista = [
-    ['iron man', False],
-    ['capiana marvel', False],
-    ['thor', False],
-    ['dotor strange', False],
-    ['thanos', True],
-    ['red skull', True],
-    ['capitan america', False],
+    ['iron man', False, 1960],
+    ['capiana marvel', False, 1890],
+    ['thor', False, 1962],
+    ['dotor strange', False, 1961],
+    ['thanos', True, 1962],
+    ['red skull', True, 1963],
+    ['capitan america', False, 2000],
 ]
 
-for nombre, villano in lista:
-    insertar_nodo(arbol, nombre, villano)
+for nombre, villano, anio in lista:
+    datos = {'villano': villano,
+             'anio_aparicion': anio}
+    insertar_nodo(arbol, nombre, datos)
 
 
+# inorden_villano(arbol)
+# print()
+# inorden_empieza_con(arbol, 'c')
+# print()
+# print(contar_heroes(arbol))
 
-inorden_villano(arbol)
+# crear_bosque(arbol, heroes, villanos)
+while not arbol_vacio(arbol):
+    info, datos = eliminar_nodo(arbol, arbol['info'])
+    print(info, datos)
+    if datos['villano'] == True:
+        insertar_nodo(villanos, info)
+    else:
+        insertar_nodo(heroes, info)
+
+
+print('heroes')
+inorden(heroes)
 print()
-inorden_empieza_con(arbol, 'c')
+print('villanos')
+inorden(villanos)
 print()
-print(contar_heroes(arbol))
+print('arbol compleo')
+inorden(arbol)
+print()
+
 
 # clave = input('ingrese parte de lo que desea buscar ')
 # inorden_empieza_con(arbol, clave)
@@ -45,6 +73,6 @@ print(contar_heroes(arbol))
 #     print('valor no encontrado en el arbol')
 
 # inorden(arbol)
-print()
+# print()
 
-postorden_heroes(arbol)
+# postorden_heroes(arbol)
