@@ -187,11 +187,11 @@ def remplazar(arbol, anterior=None, primero=None):
 def eliminar_nodo(arbol, clave, previo=None, hijo=None):
     x, datos = None, None
     if arbol['info'] is not None:
-        if clave < arbol['info']:
+        if arbol['izq'] and clave < arbol['info']:
             x, datos = eliminar_nodo(arbol['izq'], clave, arbol, 'izq')
-        elif clave > arbol['info']:
+        elif arbol['der'] and clave > arbol['info']:
             x, datos = eliminar_nodo(arbol['der'], clave, arbol, 'der')
-        else:
+        elif arbol['info'] == clave:
             x = arbol['info']
             datos = arbol['datos']
             if arbol['izq'] is None and arbol['der'] is not None:
@@ -216,6 +216,8 @@ def eliminar_nodo(arbol, clave, previo=None, hijo=None):
                 info, datos = remplazar(arbol['izq'], primero=arbol)
                 arbol['info'] = info
                 arbol['datos'] = datos
+        actualizar_altura(arbol)
+        balancear(arbol)
 
     return x, datos
 
@@ -242,26 +244,26 @@ def crear_bosque(arbol, bosque1, bosque2):
         crear_bosque(arbol['der'], bosque1, bosque2)
 
 
-arbol = nodoArbol()
+arb = nodoArbol()
 
-insertar_nodo(arbol, 1)
-insertar_nodo(arbol, 3)
-insertar_nodo(arbol, 2)
-insertar_nodo(arbol, 4)
-insertar_nodo(arbol, 5)
-insertar_nodo(arbol, 6)
-insertar_nodo(arbol, 7)
-insertar_nodo(arbol, 8)
-insertar_nodo(arbol, 9)
-insertar_nodo(arbol, 10)
-insertar_nodo(arbol, 11)
-insertar_nodo(arbol, 12)
-insertar_nodo(arbol, 13)
-insertar_nodo(arbol, 14)
-insertar_nodo(arbol, 15)
+insertar_nodo(arb, 1)
+insertar_nodo(arb, 3)
+insertar_nodo(arb, 2)
+insertar_nodo(arb, 4)
+insertar_nodo(arb, 5)
+insertar_nodo(arb, 6)
+insertar_nodo(arb, 7)
+insertar_nodo(arb, 8)
+insertar_nodo(arb, 9)
+insertar_nodo(arb, 10)
+insertar_nodo(arb, 11)
+insertar_nodo(arb, 12)
+insertar_nodo(arb, 13)
+insertar_nodo(arb, 14)
+insertar_nodo(arb, 15)
 
 print()
-preorden(arbol)
+preorden(arb)
 # print(arbol)
 # insertar_nodo(arbol, 19)
 # insertar_nodo(arbol, 7)
