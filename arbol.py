@@ -7,8 +7,18 @@ def nodoArbol():
         'datos': None,
         'der': None,
         'izq': None,
+        'altura': 0,
     }
     return nodo
+
+
+def copiar_nodo(nodo_datos, nodo_copia):
+    if nodo_datos:
+        nodo_copia['info'] = nodo_datos['info']
+        nodo_copia['der'] = nodo_datos['der']
+        nodo_copia['izq'] = nodo_datos['izq']
+        if 'datos' in nodo_copia:
+            nodo_copia['datos'] = nodo_datos['datos']
 
 
 def insertar_nodo(arbol, dato, datos=None):
@@ -23,6 +33,69 @@ def insertar_nodo(arbol, dato, datos=None):
         if arbol['der'] is None:
             arbol['der'] = nodoArbol()
         insertar_nodo(arbol['der'], dato, datos)
+    balancear(arbol)
+    actualizar_altura(arbol)
+
+
+def altura(arbol):
+    if arbol is None:
+        return -1
+    else:
+        return arbol['altura']
+
+
+def actualizar_altura(arbol):
+    if arbol is not None:
+        alt_izq = altura(arbol['izq'])
+        alt_der = altura(arbol['der'])
+        arbol['altura'] = (alt_izq if alt_izq > alt_der else alt_der) + 1
+
+
+def rotar_simple(arbol, control):
+    aux = nodoArbol()
+    if control:
+        copiar_nodo(arbol['izq'], aux)
+        arbol['izq'] = None
+        if(aux['der'] and not arbol['izq']):
+            arbol['izq'] = nodoArbol()
+        copiar_nodo(aux['der'], arbol['izq'])
+        aux['der'] = nodoArbol()
+        copiar_nodo(arbol, aux['der'])
+    else:
+        copiar_nodo(arbol['der'], aux)
+        arbol['der'] = None
+        if(aux['izq'] and not arbol['der']):
+            arbol['der'] = nodoArbol()
+        copiar_nodo(aux['izq'], arbol['der'])
+        aux['izq'] = nodoArbol()
+        copiar_nodo(arbol, aux['izq'])
+    arbol.update(aux)
+    actualizar_altura(aux['izq'])
+    actualizar_altura(aux['der'])
+    actualizar_altura(aux)
+
+
+def rotar_doble(arbol, control):
+    if control:
+        rotar_simple(arbol['izq'], False)
+        rotar_simple(arbol, True)
+    else:
+        rotar_simple(arbol['der'], True)
+        rotar_simple(arbol, False)
+
+
+def balancear(arbol):
+    if arbol is not None:
+        if altura(arbol['izq']) - altura(arbol['der']) == 2:
+            if(altura(arbol['izq']['izq']) >= altura(arbol['izq']['der'])):
+                rotar_simple(arbol, True)
+            else:
+                rotar_doble(arbol, True)
+        elif altura(arbol['der']) - altura(arbol['izq']) == 2:
+            if(altura(arbol['der']['der']) >= altura(arbol['der']['izq'])):
+                rotar_simple(arbol, False)
+            else:
+                rotar_doble(arbol, False)
 
 
 def arbol_vacio(arbol):
@@ -31,7 +104,9 @@ def arbol_vacio(arbol):
 
 def preorden(arbol):
     if(arbol is not None):
-        print(arbol['info'])
+        print(arbol['info'], arbol['altura'],
+              arbol['izq']['info'] if arbol['izq'] else None,
+              arbol['der']['info'] if arbol['der'] else None)
         preorden(arbol['izq'])
         preorden(arbol['der'])
 
@@ -120,15 +195,17 @@ def eliminar_nodo(arbol, clave, previo=None, hijo=None):
             x = arbol['info']
             datos = arbol['datos']
             if arbol['izq'] is None and arbol['der'] is not None:
-                arbol['info'] = arbol['der']['info']
-                arbol['datos'] = arbol['der']['datos']
-                arbol['izq'] = arbol['der']['izq']
-                arbol['der'] = arbol['der']['der']
+                copiar_nodo(arbol['der'], arbol)
+                # arbol['info'] = arbol['der']['info']
+                # arbol['datos'] = arbol['der']['datos']
+                # arbol['izq'] = arbol['der']['izq']
+                # arbol['der'] = arbol['der']['der']
             elif arbol['der'] is None and arbol['izq'] is not None:
-                arbol['info'] = arbol['izq']['info']
-                arbol['datos'] = arbol['izq']['datos']
-                arbol['der'] = arbol['izq']['der']
-                arbol['izq'] = arbol['izq']['izq']
+                copiar_nodo(arbol['izq'], arbol)
+                # arbol['info'] = arbol['izq']['info']
+                # arbol['datos'] = arbol['izq']['datos']
+                # arbol['der'] = arbol['izq']['der']
+                # arbol['izq'] = arbol['izq']['izq']
             elif arbol['izq'] is None and arbol['der'] is None:
                 if previo is None:
                     arbol['info'] = None
@@ -164,8 +241,28 @@ def crear_bosque(arbol, bosque1, bosque2):
             insertar_nodo(bosque1, arbol['info'])
         crear_bosque(arbol['der'], bosque1, bosque2)
 
-# arbol = nodoArbol()
 
+arbol = nodoArbol()
+
+insertar_nodo(arbol, 1)
+insertar_nodo(arbol, 3)
+insertar_nodo(arbol, 2)
+insertar_nodo(arbol, 4)
+insertar_nodo(arbol, 5)
+insertar_nodo(arbol, 6)
+insertar_nodo(arbol, 7)
+insertar_nodo(arbol, 8)
+insertar_nodo(arbol, 9)
+insertar_nodo(arbol, 10)
+insertar_nodo(arbol, 11)
+insertar_nodo(arbol, 12)
+insertar_nodo(arbol, 13)
+insertar_nodo(arbol, 14)
+insertar_nodo(arbol, 15)
+
+print()
+preorden(arbol)
+# print(arbol)
 # insertar_nodo(arbol, 19)
 # insertar_nodo(arbol, 7)
 # insertar_nodo(arbol, 1)
