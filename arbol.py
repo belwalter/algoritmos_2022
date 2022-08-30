@@ -17,7 +17,7 @@ def copiar_nodo(nodo_datos, nodo_copia):
         nodo_copia['info'] = nodo_datos['info']
         nodo_copia['der'] = nodo_datos['der']
         nodo_copia['izq'] = nodo_datos['izq']
-        if 'datos' in nodo_copia:
+        if 'datos' in nodo_datos:
             nodo_copia['datos'] = nodo_datos['datos']
 
 
@@ -114,11 +114,21 @@ def preorden(arbol):
 def contar_heroes(arbol):
     contador = 0
     if(arbol is not None):
-        if arbol['villano'] == False:
+        if arbol['datos']['villano'] == False:
             contador += 1
         contador += contar_heroes(arbol['izq'])
         contador += contar_heroes(arbol['der'])
     return contador
+
+
+def contar_heroes_villanos(arbol, resultados):
+    if(arbol is not None):
+        if arbol['datos']['villano'] == True:
+            resultados['villanos'] += 1
+        elif arbol['datos']['villano'] == False:
+            resultados['heroes'] += 1
+        contar_heroes_villanos(arbol['izq'], resultados)
+        contar_heroes_villanos(arbol['der'], resultados)
 
 
 def inorden(arbol):
@@ -126,6 +136,13 @@ def inorden(arbol):
         inorden(arbol['izq'])
         print(arbol['info'])
         inorden(arbol['der'])
+
+
+def inorden_nrr(arbol):
+    if(arbol is not None):
+        inorden_nrr(arbol['izq'])
+        print(arbol['info'], arbol['datos'])
+        inorden_nrr(arbol['der'])
 
 
 def inorden_villano(arbol):
@@ -196,16 +213,8 @@ def eliminar_nodo(arbol, clave, previo=None, hijo=None):
             datos = arbol['datos']
             if arbol['izq'] is None and arbol['der'] is not None:
                 copiar_nodo(arbol['der'], arbol)
-                # arbol['info'] = arbol['der']['info']
-                # arbol['datos'] = arbol['der']['datos']
-                # arbol['izq'] = arbol['der']['izq']
-                # arbol['der'] = arbol['der']['der']
             elif arbol['der'] is None and arbol['izq'] is not None:
                 copiar_nodo(arbol['izq'], arbol)
-                # arbol['info'] = arbol['izq']['info']
-                # arbol['datos'] = arbol['izq']['datos']
-                # arbol['der'] = arbol['izq']['der']
-                # arbol['izq'] = arbol['izq']['izq']
             elif arbol['izq'] is None and arbol['der'] is None:
                 if previo is None:
                     arbol['info'] = None
@@ -213,12 +222,11 @@ def eliminar_nodo(arbol, clave, previo=None, hijo=None):
                 else:
                     previo[hijo] = None
             else:
-                info, datos = remplazar(arbol['izq'], primero=arbol)
-                arbol['info'] = info
-                arbol['datos'] = datos
+                info_aux, datos_aux = remplazar(arbol['izq'], primero=arbol)
+                arbol['info'] = info_aux
+                arbol['datos'] = datos_aux
         actualizar_altura(arbol)
         balancear(arbol)
-
     return x, datos
 
 
@@ -244,26 +252,26 @@ def crear_bosque(arbol, bosque1, bosque2):
         crear_bosque(arbol['der'], bosque1, bosque2)
 
 
-arb = nodoArbol()
+# arb = nodoArbol()
 
-insertar_nodo(arb, 1)
-insertar_nodo(arb, 3)
-insertar_nodo(arb, 2)
-insertar_nodo(arb, 4)
-insertar_nodo(arb, 5)
-insertar_nodo(arb, 6)
-insertar_nodo(arb, 7)
-insertar_nodo(arb, 8)
-insertar_nodo(arb, 9)
-insertar_nodo(arb, 10)
-insertar_nodo(arb, 11)
-insertar_nodo(arb, 12)
-insertar_nodo(arb, 13)
-insertar_nodo(arb, 14)
-insertar_nodo(arb, 15)
+# insertar_nodo(arb, 1)
+# insertar_nodo(arb, 3)
+# insertar_nodo(arb, 2)
+# insertar_nodo(arb, 4)
+# insertar_nodo(arb, 5)
+# insertar_nodo(arb, 6)
+# insertar_nodo(arb, 7)
+# insertar_nodo(arb, 8)
+# insertar_nodo(arb, 9)
+# insertar_nodo(arb, 10)
+# insertar_nodo(arb, 11)
+# insertar_nodo(arb, 12)
+# insertar_nodo(arb, 13)
+# insertar_nodo(arb, 14)
+# insertar_nodo(arb, 15)
 
-print()
-preorden(arb)
+# print()
+# preorden(arb)
 # print(arbol)
 # insertar_nodo(arbol, 19)
 # insertar_nodo(arbol, 7)
