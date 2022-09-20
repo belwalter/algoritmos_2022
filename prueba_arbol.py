@@ -10,6 +10,7 @@ from arbol import (
     crear_bosque,
     arbol_vacio,
     contar_heroes_villanos,
+    busqueda,
 )
 
 arbol = nodoArbol()
@@ -51,23 +52,23 @@ for nombre, villano, anio in lista:
 #         insertar_nodo(villanos, info)
 #     else:
 #         insertar_nodo(heroes, info)
-cantidad = {'villanos': 0, 'heroes': 0}
-contar_heroes_villanos(arbol, cantidad)
-print('cantidad de heroes y villanos', cantidad)
+# cantidad = {'villanos': 0, 'heroes': 0}
+# contar_heroes_villanos(arbol, cantidad)
+# print('cantidad de heroes y villanos', cantidad)
 
 
-print('heroes')
-inorden(heroes)
-print()
-print('villanos')
-inorden(villanos)
-print()
-print('arbol compleo')
-inorden(arbol)
-print()
+# print('heroes')
+# inorden(heroes)
+# print()
+# print('villanos')
+# inorden(villanos)
+# print()
+# print('arbol compleo')
+# inorden(arbol)
+# print()
 
 
-print(eliminar_nodo(arbol, 'spider-man'))
+# print(eliminar_nodo(arbol, 'spider-man'))
 
 # clave = input('ingrese parte de lo que desea buscar ')
 # inorden_empieza_con(arbol, clave)
@@ -84,3 +85,13 @@ print(eliminar_nodo(arbol, 'spider-man'))
 # print()
 
 # postorden_heroes(arbol)
+
+pos = busqueda(arbol, 'thor')
+
+if pos:
+    pos['datos']['anio_aparicion'] = 2012
+
+pos = busqueda(arbol, 'thor')
+if pos:
+    print(pos['info'])
+    print(pos['datos'])

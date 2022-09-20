@@ -92,18 +92,18 @@ class HeapMin():
     def arribo(self, dato, prioridad):
         self.agregar(dato, prioridad)
 
-h = HeapMin()
+# h = HeapMin()
 
-h.agregar('A', 2)
-h.agregar('Z', 2)
-h.agregar('G', 1)
-h.agregar('T', 2)
-h.agregar('D', 3)
-print(h.vector)
-for i in range(5):
-    print('elemento eliminado', h.quitar())
-    if i == 2:
-        h.agregar('L', 1)
-    print(h.vector)
-    a= input()
-print(h.vector, h.tamanio)
+# h.agregar('A', 2)
+# h.agregar('Z', 2)
+# h.agregar('G', 1)
+# h.agregar('T', 2)
+# h.agregar('D', 3)
+# print(h.vector)
+# for i in range(5):
+#     print('elemento eliminado', h.quitar())
+#     if i == 2:
+#         h.agregar('L', 1)
+#     print(h.vector)
+#     a= input()
+# print(h.vector, h.tamanio)
