@@ -120,21 +120,22 @@ class Lista():
 
     def eliminar(self, clave, campo=None):
         dato = None
-        if(criterio(self.__inicio.info, campo) == clave):
-            dato = self.__inicio.info
-            self.__inicio = self.__inicio.sig
-        else:
-            anterior = self.__inicio
-            actual = self.__inicio.sig
-            while(actual is not None and criterio(actual.info, campo) != clave):
-                anterior = anterior.sig
-                actual = actual.sig
+        if not self.lista_vacia():
+            if(criterio(self.__inicio.info, campo) == clave):
+                dato = self.__inicio.info
+                self.__inicio = self.__inicio.sig
+            else:
+                anterior = self.__inicio
+                actual = self.__inicio.sig
+                while(actual is not None and criterio(actual.info, campo) != clave):
+                    anterior = anterior.sig
+                    actual = actual.sig
 
-            if(actual is not None):
-                dato = actual.info
-                anterior.sig = actual.sig
-        if dato:
-            self.__tamanio -= 1 
+                if(actual is not None):
+                    dato = actual.info
+                    anterior.sig = actual.sig
+            if dato:
+                self.__tamanio -= 1 
 
         return dato
 
@@ -290,3 +291,7 @@ class Lista():
 
 # print()
 # lista_estaciones.barrido_lista_lista()
+
+l = Lista()
+
+l.eliminar(3)
