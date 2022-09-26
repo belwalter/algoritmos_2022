@@ -1,3 +1,6 @@
+from cola import Cola
+
+
 def criterio(dato, campo=None):
     dic = {}
     if(hasattr(dato, '__dict__')):
@@ -23,6 +26,8 @@ class Arista():
         self.__inicio = None
         self.__tamanio = 0
 
+    def get_inicio(self):
+        return self.__inicio
 
     def insertar_arista(self, dato, peso, campo=None):
         nodo = nodoArista()
@@ -86,7 +91,7 @@ class Arista():
 
         return dato, peso
 
-    def obtener_elemento_vertice(self, indice):
+    def obtener_elemento_arista(self, indice):
         if(indice <= self.__tamanio-1 and indice >= 0):
             aux = self.__inicio
             for i in range(indice):
@@ -165,6 +170,13 @@ class Grafo():
 
         return pos
 
+    def barrido_no_visitado(self):
+        aux = self.__inicio
+        while(aux is not None):
+            if not aux.visitado:
+                print(aux.info)
+            aux = aux.sig
+
     def eliminar_vertice(self, clave, campo=None):
         dato = None
         if self.__inicio is not None:
@@ -226,10 +238,54 @@ class Grafo():
         if vert_origen:
             vert_origen.adyacentes.barrido_aristas()
 
-#! barrido profundidad y amplitud
+    def existe_paso(self, origen, destino):
+        resultado = False
+        vert_origen = self.busqueda_vertice(origen)
+        if not vert_origen.visitado:
+            vert_origen.visitado = True
+            print(vert_origen.info)
+            adyacentes = vert_origen.adyacentes.get_inicio()
+            # resultado = g.es_adyacente(origen, destino)
+            while adyacentes is not None and not resultado:
+                if adyacentes.info == destino:
+                    resultado = True
+                else:
+                    resultado = self.existe_paso(adyacentes.info, destino)
+                adyacentes = adyacentes.sig
+        return resultado
+
+    def barrido_profundidad(self, origen):
+        vert_origen = self.busqueda_vertice(origen)
+        if not vert_origen.visitado:
+            print(vert_origen.info)
+            vert_origen.visitado = True
+            adyacentes = vert_origen.adyacentes.get_inicio()
+            while adyacentes is not None:
+                self.barrido_profundidad(adyacentes.info)
+                adyacentes = adyacentes.sig
+    
+    def barrido_amplitud(self, origen):
+        self.marcar_no_visitado()
+        vert_origen = self.busqueda_vertice(origen)
+        pendientes = Cola()
+        if not vert_origen.visitado:
+            vert_origen.visitado = True
+            pendientes.arribo(vert_origen)
+            while not pendientes.cola_vacia():
+                vertice_actual = pendientes.atencion()
+                print(vertice_actual.info)
+                adyacentes = vertice_actual.adyacentes.get_inicio()
+                while adyacentes is not None:
+                    adyacente = self.busqueda_vertice(adyacentes.info)
+                    if not adyacente.visitado:
+                        adyacente.visitado = True
+                        pendientes.arribo(adyacente)
+                    adyacentes = adyacentes.sig
+
+
 #! algoritmos especiales dijkstra prim kruskal
 
-g = Grafo()
+g = Grafo(dirigido=False)
 
 g.insertar_vertice('A')
 g.insertar_vertice('Z')
@@ -237,6 +293,7 @@ g.insertar_vertice('F')
 g.insertar_vertice('C')
 g.insertar_vertice('J')
 g.insertar_vertice('K')
+g.insertar_vertice('U')
 
 
 g.insertar_arista('A', 'Z', 19)
@@ -244,13 +301,26 @@ g.insertar_arista('F', 'C', 3)
 g.insertar_arista('C', 'J', 20)
 g.insertar_arista('A', 'C', 5)
 g.insertar_arista('K', 'J', 1)
+g.insertar_arista('K', 'U', 55)
 g.insertar_arista('K', 'C', 31)
+# g.insertar_arista('K', 'A', 31)
+g.insertar_arista('J', 'F', 31)
+g.insertar_arista('A', 'J', 0)
+
+
+
+print(g.existe_paso('K', 'Z'))
 
 # g.eliminar_arista('A', 'C')
 # g.eliminar_vertice('C')
 
+# g.barrido_profundidad('K')
+# print()
+# g.barrido_amplitud('K')
+# print()
+# g.barrido_no_visitado()
 
-g.adyacentes('A')
+# g.adyacentes('A')
 
-print(g.es_adyacente('A', 'F'))
-print(g.es_adyacente('Z', 'A'))
+# print(g.es_adyacente('A', 'F'))
+# print(g.es_adyacente('Z', 'A'))
