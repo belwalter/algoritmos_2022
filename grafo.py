@@ -1,4 +1,5 @@
 from cola import Cola
+from heap import HeapMin
 
 
 def criterio(dato, campo=None):
@@ -205,12 +206,12 @@ class Grafo():
         return dato
 
     def eliminar_arista(self, origen, destino):
-        vert_origen = g.busqueda_vertice(origen)
+        vert_origen = self.busqueda_vertice(origen)
         valor, peso = None, None
         if vert_origen:
             valor, peso = vert_origen.adyacentes.eliminar_arista(destino)
             if valor:
-                vert_destino = g.busqueda_vertice(destino)
+                vert_destino = self.busqueda_vertice(destino)
                 vert_destino.adyacentes.eliminar_arista(origen)
 
         return peso
@@ -282,35 +283,66 @@ class Grafo():
                         pendientes.arribo(adyacente)
                     adyacentes = adyacentes.sig
 
+    def dijkstra(self, origen):
+        from math import inf
+        self.marcar_no_visitado()
+        no_visitado = HeapMin()
+        camino = {}
+
+        aux = self.__inicio
+        while aux is not None:
+            if aux.info == origen:
+                no_visitado.agregar([aux, None], 0)
+            else:
+                no_visitado.agregar([aux, None], inf)
+            aux = aux.sig
+
+        while no_visitado.tamanio > 0:
+            elemento, peso = no_visitado.quitar()
+            vertice, previo = elemento[0], elemento[1]
+            camino[vertice.info] = {'previo': previo, 'pes': peso}
+            adyacentes = vertice.adyacentes.get_inicio()
+            while adyacentes is not None:
+                buscado = no_visitado.buscar(adyacentes.info)
+                if buscado:
+                    if no_visitado.vector[buscado][1] > peso + adyacentes.peso:
+                        no_visitado.vector[buscado][1] = peso + adyacentes.peso
+                        no_visitado.vector[buscado][0][1] = vertice.info
+                        no_visitado.flotar(buscado)
+                adyacentes = adyacentes.sig
+        return camino
+
 
 #! algoritmos especiales dijkstra prim kruskal
 
 g = Grafo(dirigido=False)
 
-g.insertar_vertice('A')
+g.insertar_vertice('T')
 g.insertar_vertice('Z')
 g.insertar_vertice('F')
-g.insertar_vertice('C')
-g.insertar_vertice('J')
-g.insertar_vertice('K')
-g.insertar_vertice('U')
+g.insertar_vertice('X')
+g.insertar_vertice('R')
+# g.insertar_vertice('K')
+# g.insertar_vertice('U')
 
 
-g.insertar_arista('A', 'Z', 19)
-g.insertar_arista('F', 'C', 3)
-g.insertar_arista('C', 'J', 20)
-g.insertar_arista('A', 'C', 5)
-g.insertar_arista('K', 'J', 1)
-g.insertar_arista('K', 'U', 55)
-g.insertar_arista('K', 'C', 31)
+g.insertar_arista('T', 'X', 6)
+g.insertar_arista('T', 'F', 3)
+g.insertar_arista('T', 'R', 8)
+g.insertar_arista('F', 'X', 2)
+g.insertar_arista('F', 'R', 2)
+g.insertar_arista('X', 'Z', 9)
+g.insertar_arista('R', 'Z', 4)
+g.insertar_arista('R', 'X', 5)
 # g.insertar_arista('K', 'A', 31)
-g.insertar_arista('J', 'F', 31)
-g.insertar_arista('A', 'J', 0)
+# g.insertar_arista('J', 'F', 31)
+# g.insertar_arista('A', 'J', 0)
 
 
 
-print(g.existe_paso('K', 'Z'))
-
+# print(g.existe_paso('T', 'Z'))
+resultado = g.dijkstra('T')
+print(resultado)
 # g.eliminar_arista('A', 'C')
 # g.eliminar_vertice('C')
 

@@ -51,6 +51,13 @@ class HeapMin():
         self.vector = []
         self.tamanio = 0
     
+    def buscar(self, buscado):
+        for index, value in enumerate(self.vector):
+            # print(buscado, value)
+            if value[0][0].info == buscado:
+                resultado = index
+                return resultado
+
     def agregar(self, dato, prioridad=3):
         self.vector.append([dato, prioridad])
         self.flotar(self.tamanio)
@@ -81,25 +88,32 @@ class HeapMin():
                 control = False
 
     def quitar(self, heapsort=False):
-        x = self.vector[0][0]
+        x, prioridad = self.vector[0][0], self.vector[0][1]
         self.vector[0], self.vector[self.tamanio-1] = self.vector[self.tamanio-1], self.vector[0]
         self.tamanio -= 1
         self.hundir()
         if not heapsort:
             self.vector.pop()
-        return x
+        return x, prioridad
 
     def arribo(self, dato, prioridad):
         self.agregar(dato, prioridad)
 
 # h = HeapMin()
 
-# h.agregar('A', 2)
-# h.agregar('Z', 2)
-# h.agregar('G', 1)
-# h.agregar('T', 2)
-# h.agregar('D', 3)
+# h.agregar(['A', None], 1)
+# h.agregar(['Z', 'A'], 6)
+# h.agregar(['G', 'A'], 3)
+# h.agregar(['T', 'G'], 15)
+# h.agregar(['D', 'F'], 3)
 # print(h.vector)
+
+# print(h.buscar('T'))
+# h.vector[3][1] = 2
+# h.flotar(3)
+# print(h.vector)
+
+# print(h.quitar())
 # for i in range(5):
 #     print('elemento eliminado', h.quitar())
 #     if i == 2:
