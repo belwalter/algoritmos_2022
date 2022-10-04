@@ -285,7 +285,7 @@ class Grafo():
 
     def dijkstra(self, origen):
         from math import inf
-        self.marcar_no_visitado()
+        # self.marcar_no_visitado()
         no_visitado = HeapMin()
         camino = {}
 
@@ -300,7 +300,7 @@ class Grafo():
         while no_visitado.tamanio > 0:
             elemento, peso = no_visitado.quitar()
             vertice, previo = elemento[0], elemento[1]
-            camino[vertice.info] = {'previo': previo, 'pes': peso}
+            camino[vertice.info] = {'previo': previo, 'peso': peso}
             adyacentes = vertice.adyacentes.get_inicio()
             while adyacentes is not None:
                 buscado = no_visitado.buscar(adyacentes.info)
@@ -311,6 +311,46 @@ class Grafo():
                         no_visitado.flotar(buscado)
                 adyacentes = adyacentes.sig
         return camino
+
+    def kruskal(self):
+        bosque = []
+        aristas = HeapMin()
+        aux = self.__inicio
+        while aux is not None:
+            bosque.append(aux.info)
+            adyacentes = aux.adyacentes.get_inicio()
+            while adyacentes is not None:
+                aristas.arribo([aux.info, adyacentes.info], adyacentes.peso)
+                adyacentes = adyacentes.sig
+            aux = aux.sig
+
+        while len(bosque) > 1 and aristas.tamanio > 0:
+            arista, peso = aristas.quitar()
+            print(arista[0])
+            print(arista[1])
+            if arista[0] in bosque and arista[1] in bosque:
+                origen = bosque.index(arista[0])
+                destino = bosque.index(arista[1])
+                print(arista[0], origen)
+                print(arista[1], destino)
+                vert_destino = bosque.pop(destino)
+                vert_origen = bosque.pop(origen)
+                bosque.append([vert_origen, vert_destino])
+            print(bosque)
+            a = input()
+
+    def camino(self, resultados, origen, destino):
+        camino_mas_corto = {'camino': [],
+                            'costo': None}
+        if destino in resultados:
+            vert_destino = resultados[destino]
+            camino_mas_corto['costo'] = vert_destino['peso']
+            camino_mas_corto['camino'].append(destino)
+            while vert_destino['previo'] is not None:
+                camino_mas_corto['camino'].append(vert_destino['previo'])
+                vert_destino = resultados[vert_destino['previo']]
+            camino_mas_corto['camino'].reverse()
+        return camino_mas_corto
 
 
 #! algoritmos especiales dijkstra prim kruskal
@@ -338,11 +378,12 @@ g.insertar_arista('R', 'X', 5)
 # g.insertar_arista('J', 'F', 31)
 # g.insertar_arista('A', 'J', 0)
 
-
+g.kruskal()
 
 # print(g.existe_paso('T', 'Z'))
-resultado = g.dijkstra('T')
-print(resultado)
+# resultados1 = g.dijkstra('T')
+# camino = g.camino(resultados1, 'T', 'Z')
+# print(camino)
 # g.eliminar_arista('A', 'C')
 # g.eliminar_vertice('C')
 
