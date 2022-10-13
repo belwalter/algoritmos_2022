@@ -313,6 +313,11 @@ class Grafo():
         return camino
 
     def kruskal(self):
+        def buscar_en_bosque(bosque, buscado):
+            for arbol in bosque:
+                if buscado in arbol:
+                    return arbol
+
         bosque = []
         aristas = HeapMin()
         aux = self.__inicio
@@ -326,16 +331,27 @@ class Grafo():
 
         while len(bosque) > 1 and aristas.tamanio > 0:
             arista, peso = aristas.quitar()
+            print(bosque)
             print(arista[0])
             print(arista[1])
-            if arista[0] in bosque and arista[1] in bosque:
-                origen = bosque.index(arista[0])
-                destino = bosque.index(arista[1])
-                print(arista[0], origen)
-                print(arista[1], destino)
-                vert_destino = bosque.pop(destino)
-                vert_origen = bosque.pop(origen)
-                bosque.append([vert_origen, vert_destino])
+            origen = buscar_en_bosque(bosque, arista[0])
+            destino = buscar_en_bosque(bosque, arista[1])
+            print(origen, destino, 'posiciones')
+            if origen is not None and destino is not None:
+                if origen != destino:
+                    print(arista[0], origen)
+                    print(arista[1], destino)
+                    bosque.remove(origen)
+                    bosque.remove(destino)
+                    if len(origen) == 1 and len(destino) == 1:
+                        bosque.append(f'{origen};{destino};{peso}')
+                    elif len(origen) >= 1 and len(destino) == 1:
+                        bosque.append(origen+f'-{arista[0]};{destino};{peso}')
+                    elif len(origen) == 1 and len(destino) > 1:
+                        bosque.append(destino+f'-{origen};{arista[1]};{peso}')
+                    else:
+                        bosque.append(origen+'-'+destino+f'-{arista[0]};{arista[1]};{peso}')
+
             print(bosque)
             a = input()
 
@@ -362,7 +378,7 @@ g.insertar_vertice('Z')
 g.insertar_vertice('F')
 g.insertar_vertice('X')
 g.insertar_vertice('R')
-# g.insertar_vertice('K')
+g.insertar_vertice('K')
 # g.insertar_vertice('U')
 
 
@@ -373,6 +389,7 @@ g.insertar_arista('F', 'X', 2)
 g.insertar_arista('F', 'R', 2)
 g.insertar_arista('X', 'Z', 9)
 g.insertar_arista('R', 'Z', 4)
+g.insertar_arista('K', 'Z', 3)
 g.insertar_arista('R', 'X', 5)
 # g.insertar_arista('K', 'A', 31)
 # g.insertar_arista('J', 'F', 31)
