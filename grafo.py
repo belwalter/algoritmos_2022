@@ -322,7 +322,7 @@ class Grafo():
         aristas = HeapMin()
         aux = self.__inicio
         while aux is not None:
-            bosque.append(aux.info)
+            bosque.append(str(aux.info))
             adyacentes = aux.adyacentes.get_inicio()
             while adyacentes is not None:
                 aristas.arribo([aux.info, adyacentes.info], adyacentes.peso)
@@ -331,16 +331,16 @@ class Grafo():
 
         while len(bosque) > 1 and aristas.tamanio > 0:
             arista, peso = aristas.quitar()
-            print(bosque)
-            print(arista[0])
-            print(arista[1])
+            # print(bosque)
+            # print(arista[0])
+            # print(arista[1])
             origen = buscar_en_bosque(bosque, arista[0])
             destino = buscar_en_bosque(bosque, arista[1])
-            print(origen, destino, 'posiciones')
+            # print(origen, destino, 'posiciones')
             if origen is not None and destino is not None:
                 if origen != destino:
-                    print(arista[0], origen)
-                    print(arista[1], destino)
+                    # print(arista[0], origen)
+                    # print(arista[1], destino)
                     bosque.remove(origen)
                     bosque.remove(destino)
                     if len(origen) == 1 and len(destino) == 1:
@@ -352,8 +352,9 @@ class Grafo():
                     else:
                         bosque.append(origen+'-'+destino+f'-{arista[0]};{arista[1]};{peso}')
 
-            print(bosque)
-            a = input()
+            # print(bosque)
+            # a = input()
+        return bosque
 
     def camino(self, resultados, origen, destino):
         camino_mas_corto = {'camino': [],
@@ -395,7 +396,16 @@ g.insertar_arista('R', 'X', 5)
 # g.insertar_arista('J', 'F', 31)
 # g.insertar_arista('A', 'J', 0)
 
-g.kruskal()
+arbol_min = g.kruskal()
+
+arbol_min = arbol_min[0].split('-')
+peso_total = 0
+for nodo in arbol_min:
+    nodo = nodo.split(';')
+    peso_total += int(nodo[2])
+    print(f'{nodo[0]}-{nodo[1]}-{nodo[2]}')
+
+print(f"el peso total es {peso_total}")
 
 # print(g.existe_paso('T', 'Z'))
 # resultados1 = g.dijkstra('T')
