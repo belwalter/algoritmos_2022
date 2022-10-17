@@ -343,11 +343,11 @@ class Grafo():
                     # print(arista[1], destino)
                     bosque.remove(origen)
                     bosque.remove(destino)
-                    if len(origen) == 1 and len(destino) == 1:
+                    if ';' not in origen and ';' not in destino:
                         bosque.append(f'{origen};{destino};{peso}')
-                    elif len(origen) >= 1 and len(destino) == 1:
+                    elif ';' in origen and ';' not in destino:
                         bosque.append(origen+f'-{arista[0]};{destino};{peso}')
-                    elif len(origen) == 1 and len(destino) > 1:
+                    elif ';' not in origen and ';' in destino:
                         bosque.append(destino+f'-{origen};{arista[1]};{peso}')
                     else:
                         bosque.append(origen+'-'+destino+f'-{arista[0]};{arista[1]};{peso}')
