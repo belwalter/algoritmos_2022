@@ -1,5 +1,5 @@
 from cola import Cola
-from heap import HeapMin
+from heap import HeapMin, HeapMax
 
 
 def criterio(dato, campo=None):
@@ -407,10 +407,12 @@ for nodo in arbol_min:
 
 print(f"el peso total es {peso_total}")
 
-# print(g.existe_paso('T', 'Z'))
-# resultados1 = g.dijkstra('T')
-# camino = g.camino(resultados1, 'T', 'Z')
-# print(camino)
+if g.existe_paso('T', 'Z'):
+    resultados1 = g.dijkstra('T')
+    camino = g.camino(resultados1, 'T', 'Z')
+    print(camino)
+else:
+    print('no se puede llega de T a Z')
 # g.eliminar_arista('A', 'C')
 # g.eliminar_vertice('C')
 

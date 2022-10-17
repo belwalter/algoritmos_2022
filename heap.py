@@ -11,6 +11,13 @@ class HeapMax():
         self.flotar(self.tamanio)
         self.tamanio += 1
     
+    def buscar(self, buscado):
+        for index, value in enumerate(self.vector):
+            # print(buscado, value)
+            if value[0][0].info == buscado:
+                resultado = index
+                return resultado
+
     def flotar(self, indice):
         padre = (indice -1) // 2
         while(indice > 0 and self.vector[indice][1] > self.vector[padre][1]):
@@ -36,14 +43,16 @@ class HeapMax():
                 control = False
 
     def quitar(self, heapsort=False):
-        x = self.vector[0]
+        x, prioridad = self.vector[0][0], self.vector[0][1]
         self.vector[0], self.vector[self.tamanio-1] = self.vector[self.tamanio-1], self.vector[0]
         self.tamanio -= 1
         self.hundir()
         if not heapsort:
             self.vector.pop()
-        return x
+        return x, prioridad
 
+    def arribo(self, dato, prioridad):
+        self.agregar(dato, prioridad)
 
 class HeapMin():
     
