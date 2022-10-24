@@ -18,7 +18,7 @@ class nodoArista():
 
 
 class nodoVertice():
-    info, sig, visitado, adyacentes = None, None, False, None
+    info, sig, visitado, adyacentes, datos = None, None, False, None, None
 
 
 class Arista():
@@ -110,9 +110,10 @@ class Grafo():
         self.__dirigido = dirigido
 
 
-    def insertar_vertice(self, dato, campo=None):
+    def insertar_vertice(self, dato, campo=None, datos=None):
         nodo = nodoVertice()
         nodo.info = dato
+        nodo.datos = datos
         nodo.adyacentes = Arista()
 
         if(self.__inicio is None or criterio(nodo.info, campo) < criterio(self.__inicio.info, campo)):
@@ -153,13 +154,15 @@ class Grafo():
             aux.visitado = False
             aux = aux.sig
 
-    def barrido_lista_lista(self):
-        aux = self.__inicio
-        while(aux is not None):
-            print('Vertice:', aux.info)
-            print('arsitas:')
-            aux.adyacentes.barrido_aristas()
-            aux = aux.sig
+    # def barrido_lista_lista(self, origen):
+    #     self.marcar_no_visitado()
+    #     # aux = self.busqueda_vertice(origen)
+    #     aux = self.__inicio
+    #     while(aux is not None):
+    #         print('Vertice:', aux.info)
+    #         print('arsitas:')
+    #         aux.adyacentes.barrido_aristas()
+    #         aux = aux.sig
 
     def busqueda_vertice(self, buscado, campo=None):
         pos = None
@@ -369,19 +372,48 @@ class Grafo():
             camino_mas_corto['camino'].reverse()
         return camino_mas_corto
 
+    def contar_maravillas(self):
+        paises = {}
+        aux = self.__inicio
+        while aux is not None:
+            if aux.datos['pais'] not in paises:
+                print('-')
+                paises[aux.datos['pais']] = {'arq': False, 'nat': False}
+
+            if aux.datos['tipo'] == 'n':
+                paises[aux.datos['pais']]['nat'] = True
+            else:
+                paises[aux.datos['pais']]['arq'] = True
+            aux = aux.sig
+
+        return paises
 
 #! algoritmos especiales dijkstra prim kruskal
 
 g = Grafo(dirigido=False)
 
-g.insertar_vertice('T')
-g.insertar_vertice('Z')
-g.insertar_vertice('F')
-g.insertar_vertice('X')
-g.insertar_vertice('R')
-g.insertar_vertice('K')
+# ! maravillasnaturales
+g.insertar_vertice('T', datos={'tipo': 'a', 'pais': 'egipto'})
+g.insertar_vertice('Z', datos={'tipo': 'a', 'pais': 'francia'})
+g.insertar_vertice('F', datos={'tipo': 'a', 'pais': 'china'})
+g.insertar_vertice('X', datos={'tipo': 'a', 'pais': 'india'})
+g.insertar_vertice('R', datos={'tipo': 'a', 'pais': 'eeuu'})
+g.insertar_vertice('K', datos={'tipo': 'a', 'pais': 'brasil'})
 # g.insertar_vertice('U')
+#! maravillas arquitectonicas
+g.insertar_vertice('L', datos={'tipo': 'n', 'pais': 'argentina-brasil-paragauy'})
+g.insertar_vertice('J', datos={'tipo': 'n', 'pais': 'indonesia'})
+g.insertar_vertice('I', datos={'tipo': 'n', 'pais': 'sudafrica'})
+g.insertar_vertice('M', datos={'tipo': 'n', 'pais': 'india'})
+g.insertar_vertice('S', datos={'tipo': 'n', 'pais': 'china'})
+g.insertar_vertice('Y', datos={'tipo': 'n', 'pais': 'brasil'})
 
+g.insertar_arista('L', 'J', 6)
+g.insertar_arista('L', 'I', 3)
+g.insertar_arista('I', 'M', 8)
+g.insertar_arista('M', 'S', 2)
+g.insertar_arista('M', 'Y', 2)
+g.insertar_arista('Y', 'I', 9)
 
 g.insertar_arista('T', 'X', 6)
 g.insertar_arista('T', 'F', 3)
@@ -392,33 +424,38 @@ g.insertar_arista('X', 'Z', 9)
 g.insertar_arista('R', 'Z', 4)
 g.insertar_arista('K', 'Z', 3)
 g.insertar_arista('R', 'X', 5)
-# g.insertar_arista('K', 'A', 31)
-# g.insertar_arista('J', 'F', 31)
-# g.insertar_arista('A', 'J', 0)
 
-arbol_min = g.kruskal()
 
-arbol_min = arbol_min[0].split('-')
-peso_total = 0
-for nodo in arbol_min:
-    nodo = nodo.split(';')
-    peso_total += int(nodo[2])
-    print(f'{nodo[0]}-{nodo[1]}-{nodo[2]}')
+# paises = g.contar_maravillas()
+# for pais in paises:
+#     print(pais, paises[pais])
 
-print(f"el peso total es {peso_total}")
 
-if g.existe_paso('T', 'Z'):
-    resultados1 = g.dijkstra('T')
-    camino = g.camino(resultados1, 'T', 'Z')
-    print(camino)
-else:
-    print('no se puede llega de T a Z')
+# arbol_min = g.kruskal()
+
+# arbol_min = arbol_min[0].split('-')
+# peso_total = 0
+# for nodo in arbol_min:
+#     nodo = nodo.split(';')
+#     peso_total += int(nodo[2])
+#     print(f'{nodo[0]}-{nodo[1]}-{nodo[2]}')
+
+# print(f"el peso total es {peso_total}")
+
+# if g.existe_paso('T', 'Z'):
+#     resultados1 = g.dijkstra('T')
+#     camino = g.camino(resultados1, 'T', 'Z')
+#     print(camino)
+# else:
+#     print('no se puede llega de T a Z')
 # g.eliminar_arista('A', 'C')
 # g.eliminar_vertice('C')
 
 # g.barrido_profundidad('K')
 # print()
-# g.barrido_amplitud('K')
+g.barrido_profundidad('T')
+print('------------------------------------------')
+g.barrido_profundidad('L')
 # print()
 # g.barrido_no_visitado()
 
